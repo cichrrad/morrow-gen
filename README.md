@@ -23,6 +23,12 @@ Ruby application that generates **sound** and **lore-accurate** character sheets
   * Auto-names your class based on its archetype (e.g., "Battlemage", "Nightblade").
 * **Chaos Mode:** Pure random generation for wild, unpredictable builds.
 
+### **AI Lore Master (New!):**
+* **Powered by Google Gemini:** Integrates with the LLM to write custom backstories on the fly.
+* **Context Aware:** Explicitly reads your generated Stats, Skills, and Class to weave a narrative that explains *why* your character is the way they are.
+* **Thematic Generation:** Choose a "Vibe" (e.g., Gritty, Heroic, Mystical) and an "Origin" (e.g., Political Prisoner, Heretic) to guide the storyteller.
+* **Lore Compliant:** Ensures the story always ends correctly: bound in chains on the Emperor's ship, heading to Seyda Neen.
+
 ### **Complete Skill Generation:**
 * Assigns **Major** (Base 30), **Minor** (Base 15), and **Misc** (Base 5) skills.
 * Applies **+5 Specialization Bonus** (Combat/Magic/Stealth) to all relevant skills.
@@ -32,19 +38,27 @@ Ruby application that generates **sound** and **lore-accurate** character sheets
 ## Installation
 
 1. Clone the repository.
-2. Install the required gems (including the new CLI tools):
-
+2. Install the required gems:
 ```bash
 bundle install
+```
+
+3. **(Optional) Enable AI Features:**
+Get a free API Key from [Google AI Studio](https://aistudio.google.com/).
+Create a `.env` file in the project root:
+
+```env
+GEMINI_API_KEY=your_actual_api_key_here
 ```
 
 ## Usage
 
 You can now run the generator from the project root in two ways:
 
-### 1. Interactive Mode
+### 1. Interactive Mode (Recommended)
 
 Navigate through menus to select your gender, race, and class generation method.
+*After generation, you will be asked if you want to consult the Elder Scrolls for an AI Backstory.*
 
 ```bash
 ruby bin/cliMorrowGen.rb
@@ -60,45 +74,112 @@ ruby bin/MorrowGen.rb <gender> <race>
 
 *Example:* `ruby bin/MorrowGen.rb male orc`
 
-## Output Example
+## Output Example (CLI)
 
 ```text
-IDENTITY
-      Name:      Gurak gro-Agadbu
-      Race:      Male Orc
-      Birthsign: The Mage
-      Class :    Archer
-------------------------------------------------------------------------------------
-ATTRIBUTES
-      STR: 55                        INT: 30
-      WIL: 50                        AGI: 45
-      SPD: 30                        END: 50
-      PER: 30                        LUC: 40
-------------------------------------------------------------------------------------
-SKILLS
+Welcome to the Morrowind Character Generator
+Choose your gender: Male
+Choose your race: Nord
+Choose Class Generation Method: Smart Random (Lore-friendly custom class)
+------ PREVIEW ------
+[ Agent ] (Stealth)
 
-Major:                        Minor:
-      35 Long blade                  30 Medium armor
-      45 Block                       20 Spear
-      35 Athletics                   15 Restoration
-      30 Light armor                 15 Unarmored
-      30 Marksman                    15 Sneak
+Attributes: AGI, PER
 
-Other:
-      20 Heavy armor                  5 Destruction
-      20 Armorer                      5 Mysticism
-      15 Axe                          5 Acrobatics
-      10 Blunt weapon                 5 Hand to hand
-       5 Illusion                     5 Short blade
-       5 Alchemy                      5 Mercantile
-       5 Conjuration                  5 Speechcraft
-       5 Enchant                      5 Security
-       5 Alteration                   5 Luck
+Major Skills:
+- Hand to hand
+- Light armor
+- Block
+- Mercantile
+- Speechcraft
 
+Minor Skills:
+- Destruction
+- Conjuration
+- Enchant
+- Medium armor
+- Restoration
+---------------------
+
+Do you want to name this class? Yes
+Enter class name: MyClass
+
+╔ CHARACTER ═══════════════════════════════════════════════════════════════════════════╗
+║                                                                                      ║
+║ IDENTITY                                                                             ║
+║       Name:      Hurg                                                                ║
+║       Race:      Male Nord                                                           ║
+║       Birthsign: The Serpent                                                         ║
+║       Class :    MyClass                                                             ║
+║ ------------------------------------------------------------------------------------ ║
+║ ATTRIBUTES                                                                           ║
+║       STR: 50                        INT: 30                                         ║
+║       WIL: 40                        AGI: 40                                         ║
+║       SPD: 40                        END: 50                                         ║
+║       PER: 40                        LUC: 40                                         ║
+║ ------------------------------------------------------------------------------------ ║
+║ SKILLS                                                                               ║
+║                                                                                      ║
+║ Major:                        Minor:                                                 ║
+║       30 Block                       25 Medium armor                                 ║
+║       35 Light armor                 15 Conjuration                                  ║
+║       35 Hand to hand                15 Enchant                                      ║
+║       35 Mercantile                  15 Destruction                                  ║
+║       35 Speechcraft                 15 Restoration                                  ║
+║                                                                                      ║
+║ Other:                                                                               ║
+║       10 Heavy armor                  5 Alteration                                   ║
+║       10 Spear                        5 Mysticism                                    ║
+║        5 Armorer                      5 Unarmored                                    ║
+║       15 Axe                         10 Acrobatics                                   ║
+║       15 Blunt weapon                10 Marksman                                     ║
+║       10 Long blade                  10 Sneak                                        ║
+║        5 Athletics                   10 Short blade                                  ║
+║        5 Illusion                    10 Security                                     ║
+║        5 Alchemy                      5 Luck                                         ║
+║                                                                                      ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+Consult the Elder Scrolls? (Generate AI Backstory) Yes
+Choose the story's vibe: Heroic
+Choose their origin: Political Prisoner
+Any specific details to include? (Press Enter to skip): This nord is fearless, walks shirtless and hates Witches
+[⠹] Consulting the Moth Priests...   (LoreGenerator connected to: models/gemini-2.5-flash)
+[✔] Consulting the Moth Priests... (Done!)
+
+╔ LORE ════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║ Hurg, a son of Skyrim's colder reaches, was a Nord forged in the harsh       ║
+║ traditions of his homeland. His broad, unyielding frame, often bared to the  ║
+║ elements, was a testament to his raw strength and the Serpent's              ║
+║ unpredictable vitality that coursed through him. Fearless in the face of     ║
+║ danger and quick to anger when injustice arose, Hurg had little patience for ║
+║ the cunning tricks of mages, reserving a particular, fiery disdain for those ║
+║ he called 'Witches' – practitioners of the arcane who preyed on the weak,    ║
+║ whose deceitful illusions and destructive spells he found abhorrent.         ║
+║ His renown grew not from scholarly pursuits, for which he had little         ║
+║ patience, but from his booming voice in the taverns of Riften and his        ║
+║ readiness to defend the common folk. He once exposed a corrupt Jarl's        ║
+║ steward, who, with the aid of a dark Conjurer, had been extorting local      ║
+║ merchants and coercing citizens with foul enchantments. Hurg’s powerful      ║
+║ blows and surprisingly sharp wits, coupled with his ability to rally the     ║
+║ populace, saw the steward's arcane shield shattered and his magical          ║
+║ accomplice driven from the city, though not without a lingering scar on      ║
+║ Hurg's soul from the dark magic he'd faced.                                  ║
+║ Such defiant acts of heroism, however, drew the ire of those in power who    ║
+║ valued order above justice. Though celebrated by the people, Hurg's          ║
+║ disruptive influence and unwavering refusal to bow to imperial authority     ║
+║ made him a liability. Falsely accused of sedition against the Crown, Hurg    ║
+║ was apprehended in a rigged trial, his protests of innocence falling on deaf ║
+║ ears. Now, stripped of his few possessions and bound in the brig, he endures ║
+║ the rough voyage to Vvardenfell aboard an Imperial prison ship, destined for ║
+║ Seyda Neen.                                                                  ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
 ```
 
 ## Roadmap
 
 * [x] **Interactive CLI:** A robust menu system for easier selection.
 * [x] **Custom Class Generator:** Random, yet **sound** class gen using "Architected Randomness" to avoid contradictory choices.
-* [ ] **AI Backstories:** Integration with LLMs to generate a biography explaining *why* your Orc Archer knows Restoration.
+* [x] **AI Backstories:** Integration with LLMs to generate a biography explaining *why* your Orc Archer knows Restoration.

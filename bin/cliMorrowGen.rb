@@ -3,6 +3,8 @@
 
 require 'tty-prompt'
 require 'tty-box'
+require 'tty-spinner'
+require_relative '../lib/LoreGenerator'
 require_relative '../lib/CharacterGenerator'
 require_relative '../lib/CustomClassGenerator'
 
@@ -77,6 +79,52 @@ loop do
   print "\n"
   puts box
   print "\n"
+
+  # --- AI Backstory Generation ---
+  if prompt.yes?('Consult the Elder Scrolls? (Generate AI Backstory)')
+
+    # Gather User Inputs
+    vibe_choices = %w[Gritty Humorous Mystical Tragic Heroic Random]
+    vibe = prompt.select("Choose the story's vibe:", vibe_choices)
+    vibe = vibe_choices.sample if vibe == 'Random'
+
+    origin_choices = ['Political Prisoner', 'Petty Thief', 'Dark Brotherhood Target', 'Failed Merchant', 'Heretic',
+                      'Random']
+    origin = prompt.select('Choose their origin:', origin_choices)
+    origin = origin_choices.sample if origin == 'Random'
+
+    custom_input = prompt.ask('Any specific details to include? (Press Enter to skip):')
+
+    # Initialize Spinner
+    spinner = TTY::Spinner.new('[:spinner] Consulting the Moth Priests...', format: :dots)
+    spinner.auto_spin
+
+    begin
+      # Generate
+      lore_gen = LoreGenerator.new
+      story = lore_gen.generate_story(character, vibe, origin, custom_input)
+
+      spinner.success('(Done!)')
+
+      # Output
+      story_box = TTY::Box.frame(
+        # width: 80,
+        title: { top_left: ' LORE ' },
+        padding: 1,
+        border: :thick,
+        style: { border: { fg: :magenta } } # Purple border for "Mysticism"
+      ) do
+        story.scan(/.{1,76}(?:\s|$)/).map(&:strip).join("\n")
+      end
+
+      puts "\n"
+      puts story_box
+      puts "\n"
+    rescue StandardError => e
+      spinner.error('(Failed!)')
+      puts "Error connecting to the void: #{e.message}"
+    end
+  end
 
   break unless prompt.yes?('Generate another character?')
 end
