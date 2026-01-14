@@ -8,7 +8,7 @@ class Character
                 :other_skills
   attr_reader :cached_heredoc
 
-  def initialize(race_name, gender, name_db, stats_db, classes_db)
+  def initialize(race_name, gender, name_db, stats_db, char_class_hash)
     @cached_heredoc = nil
     @race = race_name
     @gender = gender.downcase
@@ -35,8 +35,8 @@ class Character
       end
     end
 
-    # select class
-    @char_class = classes_db.get_random_class
+    # class
+    @char_class = char_class_hash
 
     # add favored_atrribute boost
     favs = @char_class['favored_attributes']

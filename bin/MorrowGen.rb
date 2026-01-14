@@ -13,5 +13,8 @@ cb = ClassGenerator.new(File.join(data_dir, 'classes.yml'))
 sb = StatsGenerator.new(File.join(data_dir, 'stats.yml'), File.join(data_dir, 'birthsigns.yml'))
 nd = NameGenerator.new(File.join(data_dir, 'names.yml'))
 
-C = Character.new(ARGV[1], ARGV[0], nd, sb, cb)
+# Default to standard random class for non-interactive mode
+random_class = cb.get_random_class
+
+C = Character.new(ARGV[1], ARGV[0], nd, sb, random_class)
 puts C

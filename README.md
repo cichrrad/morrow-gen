@@ -15,6 +15,14 @@ Ruby application that generates **sound** and **lore-accurate** character sheets
 ### **True Stat Calculation:**
 * Calculates **Attributes** by summing: `Race Base Stats` + `Gender Differences` + `Birthsign Bonuses` + `Class Favored Attributes`.
 
+### **Advanced Class Generator:**
+* **Standard Mode:** Select from the classic, pre-made Morrowind classes.
+* **Smart Mode:** Procedurally generates cohesive, playable classes using **"Architected Randomness"**.
+  * Enforces logic rules (e.g., no conflicting armor types, mandatory offense/defense slots).
+  * Auto-calculates Favored Attributes based on your skill spread.
+  * Auto-names your class based on its archetype (e.g., "Battlemage", "Nightblade").
+* **Chaos Mode:** Pure random generation for wild, unpredictable builds.
+
 ### **Complete Skill Generation:**
 * Assigns **Major** (Base 30), **Minor** (Base 15), and **Misc** (Base 5) skills.
 * Applies **+5 Specialization Bonus** (Combat/Magic/Stealth) to all relevant skills.
@@ -36,7 +44,7 @@ You can now run the generator from the project root in two ways:
 
 ### 1. Interactive Mode
 
-Navigate through menus to select your gender and race.
+Navigate through menus to select your gender, race, and class generation method.
 
 ```bash
 ruby bin/cliMorrowGen.rb
@@ -44,7 +52,7 @@ ruby bin/cliMorrowGen.rb
 
 ### 2. Command Line Interface
 
-Generate a character instantly by passing arguments.
+Generate a character instantly by passing arguments. Defaults to "Standard" class generation.
 
 ```bash
 ruby bin/MorrowGen.rb <gender> <race>
@@ -86,11 +94,11 @@ Other:
        5 Conjuration                  5 Speechcraft
        5 Enchant                      5 Security
        5 Alteration                   5 Luck
+
 ```
 
 ## Roadmap
 
 * [x] **Interactive CLI:** A robust menu system for easier selection.
-* [ ] **Custom Class Generator:** Random, yet **sound** class gen (right now we pick pre-made classes). This would be semi-random, avoiding things such as having contradictory choices (Heavy armor and unarmored as major skills, etc...)
+* [x] **Custom Class Generator:** Random, yet **sound** class gen using "Architected Randomness" to avoid contradictory choices.
 * [ ] **AI Backstories:** Integration with LLMs to generate a biography explaining *why* your Orc Archer knows Restoration.
-```
