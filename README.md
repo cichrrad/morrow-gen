@@ -1,6 +1,8 @@
 # Morrowind Lore-Accurate Character Generator
 
-![demo](./morrowgen-demo.gif)
+![demo_webui](./morrowgen-webui-demo.gif)
+![demo_cli](./morrowgen-demo.gif)
+
 
 Ruby application that generates **sound** and **lore-accurate** character sheets for *The Elder Scrolls III: Morrowind*.
 
@@ -23,7 +25,7 @@ Ruby application that generates **sound** and **lore-accurate** character sheets
   * Auto-names your class based on its archetype (e.g., "Battlemage", "Nightblade").
 * **Chaos Mode:** Pure random generation for wild, unpredictable builds.
 
-### **AI Lore Master (New!):**
+### **AI Lore Master:**
 * **Powered by Google Gemini:** Integrates with the LLM to write custom backstories on the fly.
 * **Context Aware:** Explicitly reads your generated Stats, Skills, and Class to weave a narrative that explains *why* your character is the way they are.
 * **Thematic Generation:** Choose a "Vibe" (e.g., Gritty, Heroic, Mystical) and an "Origin" (e.g., Political Prisoner, Heretic) to guide the storyteller.
@@ -38,9 +40,9 @@ Ruby application that generates **sound** and **lore-accurate** character sheets
 ## Installation
 
 1. Clone the repository.
-2. Install the required gems:
+2. Install the required gems (using Make):
 ```bash
-bundle install
+make install
 ```
 
 3. **(Optional) Enable AI Features:**
@@ -49,30 +51,32 @@ Create a `.env` file in the project root:
 
 ```env
 GEMINI_API_KEY=your_actual_api_key_here
+SESSION_SECRET=some_random_string_for_web_security
 ```
 
 ## Usage
 
-You can now run the generator from the project root in two ways:
+You can run the generator in two ways using the included `Makefile`:
 
-### 1. Interactive Mode (Recommended)
+### 1. Web Interface (New!)
 
-Navigate through menus to select your gender, race, and class generation method.
-*After generation, you will be asked if you want to consult the Elder Scrolls for an AI Backstory.*
-
-```bash
-ruby bin/cliMorrowGen.rb
-```
-
-### 2. Command Line Interface
-
-Generate a character instantly by passing arguments. Defaults to "Standard" class generation.
+Launches a modern, dark-themed web interface running locally. Supports mobile layouts and dynamic updates.
 
 ```bash
-ruby bin/MorrowGen.rb <gender> <race>
+make run_webui
 ```
 
-*Example:* `ruby bin/MorrowGen.rb male orc`
+*Open your browser to `http://localhost:4567*`
+
+### 2. Terminal Interface (Classic)
+
+The original TTY-based interactive CLI. Navigate through menus to select your gender, race, and class generation method directly in your terminal.
+
+```bash
+make run_cli
+```
+
+*(You can also use `make help` to see all available commands)*
 
 ## Output Example (CLI)
 
@@ -176,10 +180,13 @@ Any specific details to include? (Press Enter to skip): This nord is fearless, w
 ║ Seyda Neen.                                                                  ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
+
 ```
 
 ## Roadmap
 
 * [x] **Interactive CLI:** A robust menu system for easier selection.
-* [x] **Custom Class Generator:** Random, yet **sound** class gen using "Architected Randomness" to avoid contradictory choices.
-* [x] **AI Backstories:** Integration with LLMs to generate a biography explaining *why* your Orc Archer knows Restoration.
+* [x] **Web Interface:** A local Sinatra-based web UI with dark mode and mobile support.
+* [x] **Custom Class Generator:** Random, yet **sound** class gen using "Architected Randomness".
+* [x] **AI Backstories:** Integration with LLMs to generate biographies.
+* [ ] **AI Illustrations:** (Planned) Visual generation of characters and critical story moments.

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MorrowGen Web</title>
+  <style>
+    :root {
+      --bg-color: #1a1a1a;
+      --text-color: #d4d4d4;
+      --accent-color: #c9a568; /* Morrowind Gold */
+      --box-bg: #2b2b2b;
+      --border-color: #444;
+      --input-bg: #111;
+    }
+
+    /* 1. Scrollbar Theme */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-color) var(--bg-color);
+    }
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-color);
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: var(--accent-color);
+      border-radius: 6px;
+      border: 3px solid var(--bg-color);
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+    }
+
+    h1, h2, h3 { color: var(--accent-color); text-transform: uppercase; }
+    h1 { font-size: 1.8rem; line-height: 1.2; }
+    
+    a { color: var(--accent-color); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .box {
+      background: var(--box-bg);
+      border: 2px solid var(--border-color);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+
+    /* 2. Button Styles */
+    .btn {
+      background: var(--accent-color);
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+      text-transform: uppercase;
+      font-size: 1rem;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--accent-color); }
+
+    /* 3. Shared Input Styles */
+    select, input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      font-family: inherit;
+      font-size: 1rem;
+      border-radius: 0; /* Remove iOS rounding */
+      box-sizing: border-box;
+    }
+
+    select:focus, input:focus {
+      outline: none;
+      border-color: var(--accent-color);
+    }
+
+    /* 4. SELECT-SPECIFIC STYLES (The Arrow) */
+    select {
+      /* Remove default OS arrow */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      
+      /* Add Custom Gold Arrow */
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23c9a568%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+      background-repeat: no-repeat;
+      background-position: right 1em top 50%;
+      background-size: 0.8em auto;
+      cursor: pointer;
+    }
+
+    /* Force the dropdown options to be dark (fixes white list on some browsers) */
+    option {
+      background-color: var(--input-bg);
+      color: #fff;
+    }
+
+    /* 5. Responsive Grids */
+    .skill-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .attribute-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .other-skills-container {
+        font-size: 0.8em; 
+        color: #888; 
+        column-count: 3;
+    }
+
+    /* Mobile Layout Tweaks */
+    @media (max-width: 768px) {
+      body { padding: 10px; }
+      
+      .skill-grid { grid-template-columns: 1fr; }
+      .attribute-grid { grid-template-columns: repeat(2, 1fr); }
+      .other-skills-container { column-count: 2; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header style="text-align: center; margin-bottom: 30px;">
+      <h1>Morrowind Character Generator</h1>
+    </header>
+    
+    <%= yield %>
+  </div>
+</body>
+</html>

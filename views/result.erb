@@ -1,0 +1,146 @@
+<div class="box">
+  <div style="border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 20px;">
+    <h2 style="margin: 0; font-size: 1.5rem;"><%= @character.name %></h2>
+    <p style="margin: 5px 0 0 0; opacity: 0.8; line-height: 1.4;">
+      <%= @character.gender.capitalize %> <%= @character.race.capitalize %> <br>
+      <%= @character.char_class['name'] %> | Birthsign: <%= @character.birthsign['name'] %>
+    </p>
+  </div>
+
+  <h3>Attributes</h3>
+  <div class="attribute-grid">
+    <% @character.attributes.each do |attr, val| %>
+      <div style="background: #222; padding: 10px; text-align: center; border: 1px solid #444;">
+        <strong style="color: #aaa; display: block; margin-bottom: 5px;"><%= attr.upcase %></strong>
+        <span style="font-size: 1.2em;"><%= val %></span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="skill-grid">
+    <div>
+      <h3 style="border-bottom: 1px solid var(--accent-color);">Major Skills</h3>
+      <% @character.major_skills.each do |skill, val| %>
+        <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #333;">
+          <span><%= skill.capitalize.gsub('_', ' ') %></span>
+          <strong style="color: var(--accent-color);"><%= val %></strong>
+        </div>
+      <% end %>
+    </div>
+
+    <div>
+      <h3 style="border-bottom: 1px solid var(--accent-color);">Minor Skills</h3>
+      <% @character.minor_skills.each do |skill, val| %>
+        <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #333;">
+          <span><%= skill.capitalize.gsub('_', ' ') %></span>
+          <strong style="color: #aaa;"><%= val %></strong>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <div style="margin-top: 20px;">
+    <h3 style="font-size: 0.9em; opacity: 0.7;">Other Skills</h3>
+    <div class="other-skills-container">
+      <% @character.other_skills.each do |skill, val| %>
+        <div style="padding: 2px 0;"><%= skill.capitalize.gsub('_', ' ') %>: <%= val %></div>
+      <% end %>
+    </div>
+  </div>
+
+</div>
+
+<div class="box" style="border-color: #a335ee;">
+  <h3 style="color: #a335ee;">Consult the Elder Scrolls</h3>
+  <p style="font-size: 0.9em; color: #888;">
+    Ask the Moth Priests to reveal this character's past.
+  </p>
+
+<div id="ai-controls">
+    <div class="skill-grid">
+      <div class="form-group">
+        <label>Vibe</label>
+        <select id="vibe">
+          <option value="Random" selected>Random</option>
+          
+          <% SERVICE.get_vibes.each do |v| %>
+            <option value="<%= v %>"><%= v %></option>
+          <% end %>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Origin</label>
+        <select id="origin">
+          <option value="Random" selected>Random</option>
+          
+          <% SERVICE.get_origins.each do |o| %>
+            <option value="<%= o %>"><%= o %></option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Specific Details (Optional)</label>
+      <input type="text" id="details" placeholder="e.g. Hates vampires, loves kwama eggs...">
+    </div>
+
+    <button onclick="generateLore()" class="btn" style="background: #a335ee; color: #fff; width: 100%;">
+      Generate Backstory
+    </button>
+  </div>
+
+  <div id="loader" style="display: none; text-align: center; padding: 20px;">
+    <span style="font-size: 2em;">🔮</span>
+    <p>Consulting the Moth Priests...</p>
+  </div>
+
+  <div id="lore-result" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #555;">
+    <h4 style="color: #a335ee; margin-top: 0;">Biography</h4>
+    <p id="lore-text" style="line-height: 1.6; white-space: pre-wrap;"></p>
+  </div>
+</div>
+
+<div style="text-align: center; margin-bottom: 40px;">
+  <a href="/" class="btn">Roll Again</a>
+</div>
+
+<script>
+  function generateLore() {
+    document.getElementById('ai-controls').style.display = 'none';
+    document.getElementById('loader').style.display = 'block';
+    document.getElementById('lore-result').style.display = 'none';
+
+    const data = {
+      vibe: document.getElementById('vibe').value,
+      origin: document.getElementById('origin').value,
+      details: document.getElementById('details').value
+    };
+
+    fetch('/generate_lore', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('loader').style.display = 'none';
+      
+      if (data.error) {
+        alert("Error: " + data.error);
+        document.getElementById('ai-controls').style.display = 'block';
+      } else {
+        const textField = document.getElementById('lore-text');
+        textField.innerText = data.story;
+        document.getElementById('lore-result').style.display = 'block';
+      }
+    })
+    .catch(err => {
+      document.getElementById('loader').style.display = 'none';
+      document.getElementById('ai-controls').style.display = 'block';
+      alert("Connection to the void failed.");
+      console.error(err);
+    });
+  }
+</script>

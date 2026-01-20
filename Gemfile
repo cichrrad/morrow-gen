@@ -10,3 +10,8 @@ gem 'rubocop'
 gem 'tty-box'
 gem 'tty-prompt'
 gem 'tty-spinner' # To show a loading animation while Gemini thinks
+
+gem 'puma'
+gem 'rackup'
+gem 'sinatra'
+gem 'sinatra-contrib' # Useful for reloader during development

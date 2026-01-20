@@ -1,0 +1,52 @@
+<div class="box">
+  <form action="/generate" method="post">
+    
+    <div class="form-group">
+      <label>Gender</label>
+      <select name="gender">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Race</label>
+      <select name="race">
+        <% @races.each do |race| %>
+          <option value="<%= race %>"><%= race %></option>
+        <% end %>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Class Generation Method</label>
+      <select name="method" id="method-select" onchange="toggleNameInput()">
+        <option value="standard">Standard (Pre-made Classes)</option>
+        <option value="smart">Smart Random (Lore-Friendly)</option>
+        <option value="chaos">Pure Chaos (Random)</option>
+      </select>
+    </div>
+
+    <div class="form-group" id="class-name-group" style="display: none;">
+      <label>Custom Class Name (Optional)</label>
+      <input type="text" name="class_name" placeholder="e.g. Witch-Hunter">
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <button type="submit" class="btn">Generate Character</button>
+    </div>
+
+  </form>
+</div>
+
+<script>
+  function toggleNameInput() {
+    const method = document.getElementById('method-select').value;
+    const nameGroup = document.getElementById('class-name-group');
+    if (method === 'standard') {
+      nameGroup.style.display = 'none';
+    } else {
+      nameGroup.style.display = 'block';
+    }
+  }
+</script>
