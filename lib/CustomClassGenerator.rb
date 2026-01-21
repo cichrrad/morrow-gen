@@ -51,6 +51,7 @@ class CustomClassGenerator
   end
 
   def generate_smart(custom_name = nil)
+    custom_name = nil if custom_name == ''
     archetype_key = ARCHETYPES.keys.sample
     archetype = ARCHETYPES[archetype_key]
 
